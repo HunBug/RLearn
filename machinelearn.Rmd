@@ -1,0 +1,34 @@
+Activity Monitors
+========================================================
+
+## Data loading
+
+```{r}
+library(caret)
+tr <- read.csv("pml-training.csv",header=T)
+t <- read.csv(file="pml-testing.csv",header=T)
+```
+
+## Exploratory
+Checking data
+```{r}
+str(t)
+```
+
+## Training
+It is easy to see, that there is many many columns in training/test setts without data and with NA-s. There are many columns with factor data with no useful infromation. The first several columns also useless in prediction since they are only identifiers and meta data.
+From the rest i chose randomly because i don't have enough RAM to cumpute all the predictors.
+
+```{r}
+m <- train(classe~.,data=tr[,c(37,38,39,40,41,42,43,44,45,46,47,48,49,8,9,10,160)],method="rpart")
+```
+
+RPART method is used because this was the fastest algorithm.
+
+## Evaulating
+
+```{r}
+v <- predict(m,newdata=t)
+v
+```
+
